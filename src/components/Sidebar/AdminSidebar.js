@@ -249,6 +249,17 @@ export default function Sidebar() {
                       Extra
                     </NavLink>
                   </li>
+                  {/* <li key="groups">
+                    <NavLink
+                      className={({ isActive }) =>
+                        isActive ? activeLink : inActiveLink
+                      }
+                      onClick={() => setCollapseShow(false)}
+                      to="/admin/group">
+                      <FaCalendarTimes className="w-5 h-5 mr-2" />
+                      Video
+                    </NavLink>
+                  </li> */}
                 </span>
               )
                 : null
