@@ -361,7 +361,7 @@ const SMS = ({ temp, id, type }) => {
       </SectionHeader>
 
       {/* All the organizations */}
-      <SubHeading>Default Messages :)</SubHeading>
+      <SubHeading>New Messages :)</SubHeading>
       {type === "Suggested"
         ? temp?.map((item, idx) => (
           <TransitionBtoT key={idx}>

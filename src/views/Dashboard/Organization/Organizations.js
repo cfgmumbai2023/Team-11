@@ -160,7 +160,7 @@ const Organizations = () => {
 				selectedTabClassName="tabs-styles"
 				onSelect={tabChangeHandler}>
 				<TabList className="tab_list-styles ">
-					<Tab className="tab-styles">General Chat</Tab>
+					<Tab className="tab-styles">Analysis</Tab>
 					<Tab className="tab-styles">Feedbacks</Tab>
 
 					{/* <Tab className="tab-styles">Department</Tab>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BigText, RenderIf } from "../../../components";
 import Attendance from "./components/Attendance";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +19,14 @@ import addNotification from "react-push-notification";
 import Prices from "./Prices";
 
 const AdminDashboard = () => {
+
+  const [role, setRole] = useState("user")
+
+  useEffect(() => {
+    const role2 = localStorage.getItem("role");
+    setRole(role2)
+  }, [role])
+
   // const { isLoading, genderData, leavesData, bloodGroupData } = useSelector(
   //   (state) => state.charts
   // );
@@ -31,7 +39,7 @@ const AdminDashboard = () => {
   // }, [dispatch]);
 
   const buttonClick = () => {
-   
+
   };
   const { currentTheme, colors } = useSelector((state) => state.theme);
   const activeLink = `items-center text-sm capitalize py-2 px-2 my-1 font-semibold flex ${currentTheme ? colors.text[currentTheme].dark : "text-purple-700"
@@ -61,12 +69,17 @@ const AdminDashboard = () => {
     const file = event.target.files[0];
     uploadFile(file);
   }
+
+  // const role = localStorage.getItem("role");
+  const alldata = localStorage.getItem("alldata");
   return (
     <div>
       {/* <BigText onMouseOver={buttonClick}>Profile</BigText> */}
       <div className="page">
         <button onMouseOver={buttonClick} className="p-2 text-3xl">
-          Content Creator
+          {role === "user" ? <span>Welcome</span> : null}
+          {role === "contentcreator" ? <span>Content Creator</span> : null}
+          {role === "moderator" ? <span>Moderator</span> : null}
         </button>
       </div>
       <section className="pt-1 bg-blueGray-50">
@@ -96,9 +109,9 @@ const AdminDashboard = () => {
                     <div className="text-lg leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                       <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
                       <RiProfileLine className="mr-1 inline" />
-                       Grades
+                      Grades
                     </div>
-                   {/* <div className="text-lg leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+                    {/* <div className="text-lg leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                       <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
                       <CgProfile className="mr-1 inline" />
                       Pan - ABCTY1234D
