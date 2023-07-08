@@ -32,7 +32,7 @@ export default function Navbar() {
 		<>
 			{/* Navbar */}
 			<nav className="absolute top-0 left-0 w-full md:flex-row md:flex-nowrap md:justify-start md:flex items-center p-2 hidden border-b borderColor ">
-				<div className="w-full mx-autp items-center flex justify-end md:flex-nowrap flex-wrap md:px-10 px-4">
+				<div className="w-full mx-autp  flex justify-end md:flex-nowrap flex-wrap md:px-10 px-4">
 					<div className="flex items-center">
 						{/* Form */}
 						{/* <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
