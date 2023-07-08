@@ -53,8 +53,8 @@ export default function Sidebar() {
   const inActiveLink = `items-center text-sm capitalize py-2 px-2 my-1 font-semibold flex text-slate-700 dark:text-slate-300 ${currentTheme ? colors.bg[currentTheme].hover : "hover:bg-purple-300"
     } dark:hover:bg-purple-900  hover:rounded-md duration-300`;
 
-
-  const role = "user"
+  
+  const role = localStorage.getItem("role");
 
   return (
     <>

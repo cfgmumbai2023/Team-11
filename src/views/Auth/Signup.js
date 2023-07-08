@@ -1,18 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { HiKey, HiMail, HiOutlineLogin } from "react-icons/hi";
+import { HiKey, HiMail, HiOutlineLogin, HiUserCircle } from "react-icons/hi";
 import { TiTick } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import { CgProfile } from "react-icons/cg";
 import { AiFillCreditCard } from "react-icons/ai";
-
-import { Fragment } from 'react'
-import { Menu } from '@headlessui/react'
 import "react-toastify/dist/ReactToastify.css";
 import { login, toastReset, setRole } from "../../store/slices/auth/authSlice";
 import axios from "axios";
-import { IndexDropdown, KanbanCardPopup, TableDropdown, UserDropdown } from "../../components";
 let alphabets = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
 let first = alphabets[Math.floor(Math.random() * alphabets.length)];
 let second = Math.floor(Math.random() * 10);
@@ -33,9 +29,9 @@ export default function Signup() {
     name: "",
     email: "",
     password: "",
+    role: "",
   });
 
-  const [roleUser,setRoleUser] = useState("user");
   const [pan, setPan] = useState(false);
   const panNumber = useRef(null);
   const verify = (event) => {
@@ -87,6 +83,8 @@ export default function Signup() {
   );
   const dispatch = useDispatch();
   const inputChangeHandler = (e) => {
+    if (e.target.target === "role" && e.target.value === "creator")
+      setPan(true);
     setUserInput((prev) => {
       return {
         ...prev,
@@ -153,43 +151,6 @@ export default function Signup() {
     setFile(event.target.files[0]);
   }
 
-
-  const links = [
-    { href: '/account-settings', label: 'Account settings' },
-    { href: '/support', label: 'Support' },
-    { href: '/license', label: 'License' },
-    { href: '/sign-out', label: 'Sign out' },
-  ]
-
-  const MyMenu = () => {
-    return (
-      <Menu>
-        <Menu.Button>Options</Menu.Button>
-        <Menu.Items>
-        <ul>
-          {links.map((link) => (
-            /* Use the `active` state to conditionally style the active item. */
-            <Menu.Item key={link.href} as={Fragment}>
-              {({ active }) => (
-               <li>
-                <a
-                  href={link.href}
-                  className={`${active ? 'bg-blue-500 text-white ' : 'bg-white  text-slate-500 text-xs font-semibold mb-2 flex items-center'
-                    }`}
-                >
-                  {link.label}
-                </a>
-                </li>
-              )}
-            </Menu.Item>
-
-          ))}
-          </ul>
-        </Menu.Items>
-      </Menu>
-    )
-  }
-
   return (
     <form className="max-w-sm bg-white px-8 py-7 rounded-2xl shadow-xl w-full">
       <h2 className="text-2xl mb-6 font-normal text-slate-500">
@@ -251,7 +212,6 @@ export default function Signup() {
           required
         />
       </div>
-      <MyMenu />
       <div className="flex">
         <div className="relative w-full mb-3">
           <label
@@ -270,17 +230,63 @@ export default function Signup() {
           />
         </div>
 
-        <div className="text-center mt-6">
-          <button
-            className="bg-purple-600 hover:bg-purple-700 flex justify-end text-white active:bg-blueGray-600 text-xl font-base px-6 py-3 rounded-xl shadow outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            type="submit"
-            onClick={verify}
-          >
-            {/* <HiOutlineLogin className="mr-2 h-6 w-6" /> */}
-            <TiTick />
-          </button>
+          <div className="text-center mt-6">
+            <button
+              className="bg-purple-600 hover:bg-purple-700 flex justify-end text-white active:bg-blueGray-600 text-xl font-base px-6 py-3 rounded-xl shadow outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              type="submit"
+              onClick={verify}
+            >
+              {/* <HiOutlineLogin className="mr-2 h-6 w-6" /> */}
+              <TiTick />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
+
+      {userInput.role === "user" && (
+        <>
+          <div className="flex">
+            <div className="relative w-full mb-3">
+              <label
+                className="flex items-center text-slate-500 text-xs font-semibold mb-2"
+                htmlFor="grid-password"
+              >
+                <AiFillCreditCard className="mr-1" />
+                School Name
+              </label>
+              <input
+                name="school"
+                onChange={inputChangeHandler}
+                type="text"
+                className="px-3 py-3 placeholder-blueGray-300 text-slate-700 bg-gray-50 placeholder:text-slate-400 rounded-xl text-sm border borderColor  focus:outline-none  w-full ease-linear transition-all duration-150"
+                placeholder="Enter your pancard number..."
+                required
+              />
+            </div>
+          </div>
+
+          <div className="flex">
+            <div className="relative w-full mb-3">
+              <label
+                className="flex items-center text-slate-500 text-xs font-semibold mb-2"
+                htmlFor="grid-password"
+              >
+                <AiFillCreditCard className="mr-1" />
+                Grade
+              </label>
+              <input
+                name="grade"
+                onChange={inputChangeHandler}
+                type="text"
+                className="px-3 py-3 placeholder-blueGray-300 text-slate-700 bg-gray-50 placeholder:text-slate-400 rounded-xl text-sm border borderColor  focus:outline-none  w-full ease-linear transition-all duration-150"
+                placeholder="Enter your pancard number..."
+                required
+              />
+            </div>
+          </div>
+        </>
+      )}
+
       <div className="text-center mt-6">
         {pan == true ?
           <button
@@ -293,7 +299,7 @@ export default function Signup() {
           </button>
           :
           <button
-            disabled
+           disabled
             className="bg-slate-300 flex items-center justify-center text-white active:bg-blueGray-600 text-lg font-base px-6 py-2 rounded-xl shadow outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
           >
             <HiOutlineLogin className="mr-2 h-6 w-6" />
@@ -304,6 +310,6 @@ export default function Signup() {
         }
 
       </div>
-    </form >
+    </form>
   );
 }
