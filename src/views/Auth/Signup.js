@@ -6,23 +6,9 @@ import { TiTick } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import { CgProfile } from "react-icons/cg";
 import { AiFillCreditCard } from "react-icons/ai";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import "react-toastify/dist/ReactToastify.css";
 import { login, toastReset, setRole } from "../../store/slices/auth/authSlice";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
-import {
-  IndexDropdown,
-  KanbanCardPopup,
-  TableDropdown,
-  UserDropdown,
-} from "../../components";
-var FormData = require('form-data');
-var data = new FormData();
 let alphabets = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
 let first = alphabets[Math.floor(Math.random() * alphabets.length)];
 let second = Math.floor(Math.random() * 10);
@@ -45,8 +31,6 @@ export default function Signup() {
     password: "",
     role: "",
   });
-
-  const navigate = useNavigate();
 
   const [pan, setPan] = useState(false);
   const panNumber = useRef(null);
@@ -167,51 +151,6 @@ export default function Signup() {
     setFile(event.target.files[0]);
   }
 
-  const links = [
-    { href: "/account-settings", label: "Account settings" },
-    { href: "/support", label: "Support" },
-    { href: "/license", label: "License" },
-    { href: "/sign-out", label: "Sign out" },
-  ];
-
-
-  const signupHandler = (e) => {
-    e.preventDefault();
-    if (!userInput.email.includes("@")) {
-      alert("Enter a valid email address!");
-      return;
-    }
-    if (userInput.email.length === 0) {
-      alert("Email field can't be empty!");
-      return;
-    }
-    if (userInput.password.length === 0) {
-      alert("Password field can't be empty!");
-      return;
-    }
-
-
-    data.append('username', userInput.username);
-    data.append('email', userInput.email);
-    data.append('password', userInput.password);
-    var config = {
-      method: 'post',
-      url: 'http://127.0.0.1:8000/accounts/signup/',
-      data: data
-    };
-    toast("User created");
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        navigate("/admin/dashboard/")
-      })
-      .catch(function (error) {
-        console.log(error);
-        navigate("/admin/dashboard/")
-      });
-
-  };
-
   return (
     <form className="max-w-sm bg-white px-8 py-7 rounded-2xl shadow-xl w-full">
       <h2 className="text-2xl mb-6 font-normal text-slate-500">
@@ -273,44 +212,23 @@ export default function Signup() {
           required
         />
       </div>
-      <div className="relative w-full mb-3">
-        <label
-          className="flex items-center text-slate-500 text-xs font-semibold mb-2"
-          htmlFor="grid-password"
-        >
-          <HiUserCircle className="mr-1" />
-          Select Role
-        </label>
-        <select
-          onChange={inputChangeHandler}
-          name="role"
-          type="text"
-          class="select"
-          className="px-3 py-3 placeholder-blueGray-300 text-slate-700 placeholder:text-slate-400 bg-gray-50  border borderColor rounded-xl text-sm  focus:outline-none w-full ease-linear transition-all duration-150"
-        >
-          <option value="admin">Admin</option>
-          <option value="creator">Creator</option>
-          <option value="user">User</option>
-        </select>
-      </div>
-      {userInput.role === "creator" && (
-        <div className="flex">
-          <div className="relative w-full mb-3">
-            <label
-              className="flex items-center text-slate-500 text-xs font-semibold mb-2"
-              htmlFor="grid-password"
-            >
-              <AiFillCreditCard className="mr-1" />
-              Pan Number
-            </label>
-            <input
-              ref={panNumber}
-              type="text"
-              className="px-3 py-3 placeholder-blueGray-300 text-slate-700 bg-gray-50 placeholder:text-slate-400 rounded-xl text-sm border borderColor  focus:outline-none  w-full ease-linear transition-all duration-150"
-              placeholder="Enter your pancard number..."
-              required
-            />
-          </div>
+      <div className="flex">
+        <div className="relative w-full mb-3">
+          <label
+            className="flex items-center text-slate-500 text-xs font-semibold mb-2"
+            htmlFor="grid-password"
+          >
+            <AiFillCreditCard className="mr-1" />
+            Pan Number
+          </label>
+          <input
+            ref={panNumber}
+            type="text"
+            className="px-3 py-3 placeholder-blueGray-300 text-slate-700 bg-gray-50 placeholder:text-slate-400 rounded-xl text-sm border borderColor  focus:outline-none  w-full ease-linear transition-all duration-150"
+            placeholder="Enter your pancard number..."
+            required
+          />
+        </div>
 
           <div className="text-center mt-6">
             <button
@@ -370,15 +288,27 @@ export default function Signup() {
       )}
 
       <div className="text-center mt-6">
-        <button
-          className="bg-purple-600 hover:bg-purple-700 flex items-center justify-center text-white active:bg-blueGray-600 text-lg font-base px-6 py-2 rounded-xl shadow outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-          type="submit"
-          disabled={pan}
-          onClick={loginHandler}
-        >
-          <HiOutlineLogin className="mr-2 h-6 w-6" />
-          Sign Up
-        </button>
+        {pan == true ?
+          <button
+            className="bg-purple-600 hover:bg-purple-700 flex items-center justify-center text-white active:bg-blueGray-600 text-lg font-base px-6 py-2 rounded-xl shadow outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+            type="submit"
+            onClick={loginHandler}
+          >
+            <HiOutlineLogin className="mr-2 h-6 w-6" />
+            Sign Up
+          </button>
+          :
+          <button
+           disabled
+            className="bg-slate-300 flex items-center justify-center text-white active:bg-blueGray-600 text-lg font-base px-6 py-2 rounded-xl shadow outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+          >
+            <HiOutlineLogin className="mr-2 h-6 w-6" />
+            Sign Up
+          </button>
+
+
+        }
+
       </div>
     </form>
   );

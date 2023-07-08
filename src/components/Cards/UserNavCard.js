@@ -1,8 +1,6 @@
 import { AiFillFire } from "react-icons/ai";
 import { useEffect, useState } from "react";
-import "flowbite";
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')

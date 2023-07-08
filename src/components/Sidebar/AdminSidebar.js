@@ -67,10 +67,10 @@ export default function Sidebar() {
             style={{
               fontFamily: "Roxierossa",
               display: "flex",
-              justifyContent: "space-around",
+              justifyContent: "center",
               alignItems: "center",
             }}
-            className="md:mt-4 md:ml-3 md:block inline-block text-left text-purple_1 dark:border-purple-700 dark:text-slate-200 ml-2  mr-0 whitespace-nowrap text-xl font-semibold"
+            className="md:mt-4 md:block inline-block text-left text-purple_1 dark:border-purple-700 dark:text-slate-200 mr-0 whitespace-nowrap text-xl font-semibold"
             to="/dashboard/">
             {/* JEET */}
             <img
@@ -250,6 +250,17 @@ export default function Sidebar() {
                       Extra
                     </NavLink>
                   </li>
+                  {/* <li key="groups">
+                    <NavLink
+                      className={({ isActive }) =>
+                        isActive ? activeLink : inActiveLink
+                      }
+                      onClick={() => setCollapseShow(false)}
+                      to="/admin/group">
+                      <FaCalendarTimes className="w-5 h-5 mr-2" />
+                      Video
+                    </NavLink>
+                  </li> */}
                 </span>
               )
                 : null
