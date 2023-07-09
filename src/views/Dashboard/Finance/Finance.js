@@ -8,9 +8,9 @@ import { FlashcardComponent } from 'react-flashcard'
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "../../../assets/styles/react-tabs.css";
 import * as React from 'react';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+// import Accordion from '@mui/material/Accordion';
+// import AccordionSummary from '@mui/material/AccordionSummary';
+// import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from "react-router-dom";
@@ -226,8 +226,7 @@ const Finance = () => {
 			});
 
 	}
-	getAll();
-	const getByTags = (tag) => {
+	const getByTags = () => {
 		var urlPath = 'http://127.0.0.1:8000/api/videos/tags?tags='
 		urlPath = urlPath + tag?.toLowerCase();
 		var config = {
@@ -237,8 +236,8 @@ const Finance = () => {
 		console.log(config)
 		axios(config)
 			.then(function (response) {
-				setTagVideos(response.data);
 				console.log(response.data);
+				setTagVideos(response.data);
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -248,7 +247,9 @@ const Finance = () => {
 
 	useEffect(() => {
 		getByLanguage();
-		getByTags();
+		getAll();
+
+		//getByTags();
 		getByQuery();
 		console.log(langVideos);
 		console.log(tagVideos);
@@ -433,7 +434,7 @@ const Finance = () => {
 									</p>
 								</div>
 								<div>
-									<Accordion>
+									{/* <Accordion>
 										<AccordionSummary
 											expandIcon={<ExpandMoreIcon />}
 											aria-controls="panel1a-content"
@@ -453,7 +454,7 @@ const Finance = () => {
 												</div>
 											</Typography>
 										</AccordionDetails>
-									</Accordion>
+									</Accordion> */}
 
 								</div>
 							</div>
@@ -466,7 +467,7 @@ const Finance = () => {
 					<Button children="submit" variant="contained" color="primary" onClick={getByTags}></Button>
 					<div class="grid grid-cols-3 gap-3">
 
-						{langVideos?.map((video) => {
+						{tagVideos?.map((video) => {
 							return <div class="max-w-sm rounded overflow-hidden shadow-lg">
 
 								<div class="aspect-video">
@@ -485,7 +486,7 @@ const Finance = () => {
 									</p>
 								</div>
 								<div>
-									<Accordion>
+									{/* <Accordion>
 										<AccordionSummary
 											expandIcon={<ExpandMoreIcon />}
 											aria-controls="panel1a-content"
@@ -505,7 +506,7 @@ const Finance = () => {
 												</div>
 											</Typography>
 										</AccordionDetails>
-									</Accordion>
+									</Accordion> */}
 
 								</div>
 							</div>
@@ -535,7 +536,7 @@ const Finance = () => {
 									</p>
 								</div>
 								<div>
-									<Accordion>
+									{/* <Accordion>
 										<AccordionSummary
 											expandIcon={<ExpandMoreIcon />}
 											aria-controls="panel1a-content"
@@ -555,7 +556,7 @@ const Finance = () => {
 												</div>
 											</Typography>
 										</AccordionDetails>
-									</Accordion>
+									</Accordion> */}
 
 								</div>
 							</div>
@@ -585,7 +586,7 @@ const Finance = () => {
 									</p>
 								</div>
 								<div>
-									<Accordion>
+									{/* <Accordion>
 										<AccordionSummary
 											expandIcon={<ExpandMoreIcon />}
 											aria-controls="panel1a-content"
@@ -605,7 +606,7 @@ const Finance = () => {
 												</div>
 											</Typography>
 										</AccordionDetails>
-									</Accordion>
+									</Accordion> */}
 
 								</div>
 							</div>

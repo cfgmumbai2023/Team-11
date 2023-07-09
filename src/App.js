@@ -13,6 +13,7 @@ import Finan2 from "./views/Dashboard/Finance/Finan2"
 import Signup from "./views/Auth/Signup"
 import More from "./views/Auth/MoreDetails"
 import AlanHooks from "./AlanHooks"
+// import PysQuestions from "./Questionaire"
 
 function App() {
 	useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
 				<Routes>
 					<Route path="/Profile" element={<Profile />}></Route>
 					<Route path="/signup" element={<center className="m-14"><Signup /></center>}></Route>
+					{/* <Route path="/questions" element={<PysQuestions />}></Route> */}
 					{/* <Route path="/more" element={<center className="m-14"><More /></center>}></Route> */}
 					<Route path="/login" element={<center className="m-14"><Login /></center>}></Route>
 					<Route path="/admin/finance/:id" element={<Finan2 />}></Route>

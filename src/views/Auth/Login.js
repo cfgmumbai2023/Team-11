@@ -77,8 +77,8 @@ export default function Login() {
 
     var axios = require('axios');
     var data = JSON.stringify({
-      "name": userInput.username,
-      "password": userInput.password,
+      "name": "harsh",
+      "password": "123456"
     });
 
     var config = {
