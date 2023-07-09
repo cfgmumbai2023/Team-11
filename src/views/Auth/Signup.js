@@ -48,19 +48,24 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
-  const [pan, setPan] = useState(false);
+  const [pan, setPan] = useState(true);
   const panNumber = useRef(null);
   const verify = (event) => {
     event.preventDefault();
     const options = {
-      method: "POST",
-      url: "https://pan-card-verification1.p.rapidapi.com/v3/tasks/sync/verify_with_source/ind_pan",
+      method: 'POST',
+      url: 'https://pan-card-verification1.p.rapidapi.com/v3/tasks/sync/verify_with_source/ind_pan',
       headers: {
-        "content-type": "application/json",
-        "X-RapidAPI-Key": "",
-        "X-RapidAPI-Host": "pan-card-verification1.p.rapidapi.com",
+        'content-type': 'application/json',
+        'X-RapidAPI-Key': '',
+        'X-RapidAPI-Host': 'pan-card-verification1.p.rapidapi.com'
       },
-      data: `{"task_id":"74f4c926-250c-43ca-9c53-453e87ceacd1","group_id":"8e16424a-58fc-4ba4-ab20-5bc8e7c3c41e","data":{"id_number":"${panNumber.current.value}"}}`,
+      data: {
+        "task_id": "74f4c926-250c-43ca-9c53-453e87ceacd1",
+        "group_id": "8e16424a-58fc-4ba4-ab20-5bc8e7c3c41e",
+        "data": {
+            "id_number": panNumber.current.value
+        }}
     };
     axios
       .request(options)
@@ -110,7 +115,7 @@ export default function Signup() {
   };
 
   const loginHandler = () => {
-    if (userInput.captcha != captcha) {
+    if (userInput.captcha != captcha && userInput.role == "admin") {
       alert("Invalid Captcha!");
       return;
     }
@@ -373,7 +378,7 @@ export default function Signup() {
         <button
           className="bg-purple-600 hover:bg-purple-700 flex items-center justify-center text-white active:bg-blueGray-600 text-lg font-base px-6 py-2 rounded-xl shadow outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
           type="submit"
-          disabled={pan}
+          disabled={!pan}
           onClick={loginHandler}
         >
           <HiOutlineLogin className="mr-2 h-6 w-6" />
