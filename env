@@ -1,0 +1,18 @@
+ACCESS_TOKEN = 53ae70d4d9976e661520767f7e64
+
+REFRESH_TOKEN =ca87406e997e0297a7ce0c4fb026
+
+MONGO = mongodb+srv://bhumika13:bhumika13@cluster0.eefj8fr.mongodb.net/jpdb?retryWrites=true&w=majority
+
+JWT = SECRET
+BASE_URL = http://localhost:3000
+HOST = smtp.gmail.com
+SERVICE = gmail
+EMAIL_PORT = 587
+SECURE = true
+USER = bhumikamange13@gmail.com
+PASS = texufakxkbkjmjrg
+
+
+KEY_ID = rzp_test_7Nblv9LSdJE0uu
+SECRET_KEY = 
