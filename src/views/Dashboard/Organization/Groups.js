@@ -32,9 +32,9 @@ const Groups = (props) => {
         <td>{info.id}</td>
         <td>{info.Name}</td>
         <td>{info.No_Of_People_Influenced}</td>
-		<td>{info.Coupon_Code}</td>
-		<td>{info.Coupon_Start_Date}</td>
-		<td>{info.Coupon_Valid_Till}</td>
+        <td>{info.Coupon_Code}</td>
+        <td>{info.Coupon_Start_Date}</td>
+        <td>{info.Coupon_Valid_Till}</td>
       </tr>
     );
   });
@@ -77,7 +77,7 @@ const Groups = (props) => {
     <div>
       <div className="flex justify-between pb-5">
         <p className="text-3xl pb-6 dark:text-slate-300">
-          Meet Our Influencers:
+          Users:
         </p>
         <SectionHeader>
           <Modal
@@ -183,44 +183,49 @@ const Groups = (props) => {
       <TableContainer>
         <Table>
           <Thead>
-			<Th>Sr. No.</Th>
+            <Th>Sr. No.</Th>
             <Th>Name</Th>
-            <Th>Coupon Code</Th>
-            <Th>No. of People Influenced</Th>
-            <Th>Coupon Start Date</Th>
-            <Th>Coupon Valid Till</Th>
+            <Th>Title</Th>
+            <Th>URL</Th>
+            <Th>Tags</Th>
+            <Th>Grade</Th>
+            <Th>Verified</Th>
           </Thead>
           <Tbody>
-		  <Td>1</Td>
+            <Td>1</Td>
             <Td>Om Shukla</Td>
             <Td>UR7896</Td>
-            <Td>4</Td>
-            <Td>11-01-2023</Td>
-            <Td>30-03-2023</Td>
+            <Td>https://www.youtube.com/watch?v=PUB0TaZ7bhA</Td>
+            <Td>trigo maths 8th</Td>
+            <Td>8th</Td>
+            <Td><Button children="Verify" className="bg-green-500"></Button></Td>
           </Tbody>
           <Tbody>
-			<Td>2</Td>
-            <Td>Bhumika Mange</Td>
+            <Td>1</Td>
+            <Td>Om Shukla</Td>
             <Td>UR7896</Td>
-            <Td>4</Td>
-            <Td>05-02-2023</Td>
-            <Td>30-03-2023</Td>
+            <Td>https://www.youtube.com/watch?v=PUB0TaZ7bhA</Td>
+            <Td>trigo maths 8th</Td>
+            <Td>8th</Td>
+            <Td><Button children="Verify" className="bg-green-500"></Button></Td>
           </Tbody>
           <Tbody>
-		  <Td>3</Td>
-            <Td>Rachana Yeldi</Td>
-            <Td>YH745J</Td>
-            <Td>2</Td>
-            <Td>01-01-2023</Td>
-            <Td>01-04-2023</Td>
+            <Td>1</Td>
+            <Td>Om Shukla</Td>
+            <Td>UR7896</Td>
+            <Td>https://www.youtube.com/watch?v=PUB0TaZ7bhA</Td>
+            <Td>trigo maths 8th</Td>
+            <Td>8th</Td>
+            <Td><Button children="Verify" className="bg-green-500"></Button></Td>
           </Tbody>
           <Tbody>
-		  <Td>4</Td>
-            <Td>Yash Joshi</Td>
-            <Td>YF745R</Td>
-            <Td>3</Td>
-            <Td>02-01-2023</Td>
-            <Td>03-04-2023</Td>
+            <Td>1</Td>
+            <Td>Om Shukla</Td>
+            <Td>UR7896</Td>
+            <Td>https://www.youtube.com/watch?v=PUB0TaZ7bhA</Td>
+            <Td>trigo maths 8th</Td>
+            <Td>8th</Td>
+            <Td><Button children="Verify" className="bg-green-500"></Button></Td>
           </Tbody>
         </Table>
       </TableContainer>

@@ -214,7 +214,7 @@ export default function Sidebar() {
                       onClick={() => setCollapseShow(false)}
                       to="/admin/organizations">
                       <MdVideoCall className="w-5 h-5 mr-2" />
-                      Content
+                      Analysis
                     </NavLink>
                   </li>
                   <li key="finance">
@@ -225,7 +225,7 @@ export default function Sidebar() {
                       onClick={() => setCollapseShow(false)}
                       to="/admin/finance">
                       <IoMdAnalytics className="w-5 h-5 mr-2" />
-                      Feedback
+                      Videos
                     </NavLink>
                   </li>
                   <li key="groups">
@@ -236,7 +236,7 @@ export default function Sidebar() {
                       onClick={() => setCollapseShow(false)}
                       to="/admin/group">
                       <FaCalendarTimes className="w-5 h-5 mr-2" />
-                      Dashboard
+                      Verification
                     </NavLink>
                   </li>
                   <li key="users">

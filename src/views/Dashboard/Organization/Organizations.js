@@ -24,6 +24,8 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom"
+import { PowerBIEmbed } from 'powerbi-client-react';
+import { models } from 'powerbi-client';
 import {
 	// Allowance
 	allAllowances,
@@ -160,7 +162,9 @@ const Organizations = () => {
 				selectedTabClassName="tabs-styles"
 				onSelect={tabChangeHandler}>
 				<TabList className="tab_list-styles ">
-					<Tab className="tab-styles">Analysis</Tab>
+					<Tab className="tab-styles">
+						Analysis
+					</Tab>
 					<Tab className="tab-styles">Feedbacks</Tab>
 
 					{/* <Tab className="tab-styles">Department</Tab>
@@ -170,7 +174,39 @@ const Organizations = () => {
 				</TabList>
 
 				<Suspense fallback={<LoadingSpinner />}>
-					<TabPanel>{!isPending && <AllOrganizations/>}</TabPanel>
+					<TabPanel><div>
+						<PowerBIEmbed
+							embedConfig={{
+								type: 'report',   // Supported types: report, dashboard, tile, visual and qna
+								id: 'c325f9de-187d-4a74-8484-5db327831b10',
+								accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyIsImtpZCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZDFmMTQzNDgtZjFiNS00YTA5LWFjOTktN2ViZjIxM2NiYzgxLyIsImlhdCI6MTY4ODg2NTM1MiwibmJmIjoxNjg4ODY1MzUyLCJleHAiOjE2ODg4NzA2MjgsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVFFBeS84VEFBQUF3bGpUY1gxYmJnbm9NcDNCK2R2WWl0ZWgzM2hXU3c5Zmo4UFM4b2wyT2ZiZ3lrYWo1ZXFhK3IwYm9rdzdtMnFzIiwiYW1yIjpbInB3ZCJdLCJhcHBpZCI6Ijg3MWMwMTBmLTVlNjEtNGZiMS04M2FjLTk4NjEwYTdlOTExMCIsImFwcGlkYWNyIjoiMCIsImZhbWlseV9uYW1lIjoiTUFOR0UiLCJnaXZlbl9uYW1lIjoiQkhVTUlLQSIsImlwYWRkciI6IjE2NS4yMjUuMTA2LjgxIiwibmFtZSI6IkJIVU1JS0EgTUFOR0UgLSA2MDAwNDIwMDA2NSIsIm9pZCI6ImViMGMyYjg5LWYzYTgtNGFjMy04NzhlLTY1NWFhNGY1OTc4MSIsInB1aWQiOiIxMDAzMjAwMTE0NTVGQkFEIiwicmgiOiIwLkFUMEFTRVB4MGJYeENVcXNtWDZfSVR5OGdRa0FBQUFBQUFBQXdBQUFBQUFBQUFBOUFOQS4iLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzaWduaW5fc3RhdGUiOlsia21zaSJdLCJzdWIiOiJuNGlERklCb3pkNDJncWt6eHJFUGJZZkdGS28tN0ppSkl5YVp5d1lnbjdVIiwidGlkIjoiZDFmMTQzNDgtZjFiNS00YTA5LWFjOTktN2ViZjIxM2NiYzgxIiwidW5pcXVlX25hbWUiOiJCSFVNSUtBLk1BTkdFNjVAc3ZrbW11bWJhaS5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJCSFVNSUtBLk1BTkdFNjVAc3ZrbW11bWJhaS5vbm1pY3Jvc29mdC5jb20iLCJ1dGkiOiJEV19PUWo2eUQwbVM3SXFTS0RJeUFBIiwidmVyIjoiMS4wIiwid2lkcyI6WyJiNzlmYmY0ZC0zZWY5LTQ2ODktODE0My03NmIxOTRlODU1MDkiXX0.c5j_3dOzjlKpFtVTx44n2kX4xwJ688zutodl_sJhtZNtfbfFLZfhup9ow1Y1on6lmwh-_WJ_ZJLkKzoqFFH5r9rn4tmXc7gsCoB4qiqmoUq4bQ-kLUXuWQgAItxgDKWtYUw2kf075BSEkxlq-6SUAJXKxkI4iHfhFmx_jpbUanuqTTGeTKZQi32UC796XT1HKTnlQ4GXNoBKeCYXDfy4upYvxVMApVUZA8_bBBwLGe0pIBqhoj4DPOocz4YCwA_VapJGfpo8XB49MXEN9ZpffolVr8v9F2ifbHVPTp6Rz6nkb4wqI8eweV7lJezKP7ORSwpk0HfbNcF7_kdU7HW7fg",
+								embedUrl: "https://app.powerbi.com/reportEmbed?reportId=c325f9de-187d-4a74-8484-5db327831b10&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVNPVVRILUVBU1QtQVNJQS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldCIsImVtYmVkRmVhdHVyZXMiOnsibW9kZXJuRW1iZWQiOnRydWUsInVzYWdlTWV0cmljc1ZOZXh0Ijp0cnVlfX0%3d",
+								tokenType: models.TokenType.Aad,
+								settings: {
+									panes: {
+										filters: {
+											expanded: false,
+											visible: true
+										}
+									},
+								}
+							}}
+
+							eventHandlers={
+								new Map([
+									['loaded', function () { console.log('Report loaded'); }],
+									['rendered', function () { console.log('Report rendered'); }],
+									['error', function (event) { console.log(event.detail); }]
+								])
+							}
+
+							cssClassName={"Embed-container"}
+
+							getEmbeddedComponent={(embeddedReport) => {
+								window.report = embeddedReport;
+							}}
+						/>
+					</div></TabPanel>
 					<TabPanel>{!isPending && <SMS temp={SuggestData} id="4" type={"Suggested"} />}</TabPanel>
 				</Suspense>
 			</Tabs>

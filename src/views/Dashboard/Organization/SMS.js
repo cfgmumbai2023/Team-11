@@ -192,7 +192,7 @@ const SMS = ({ temp, id, type }) => {
     <>
       <SectionHeader>
         <Modal
-          title="Add new coupon"
+          title="Add"
           className="float-right"
           activator={({ setShow }) => (
             <Button Icon={HiPlusCircle} onClick={() => setShow(true)}>
@@ -201,7 +201,7 @@ const SMS = ({ temp, id, type }) => {
           )}
         >
           <form style={{ display: "none" }} ref={form}>
-            <input type="text" name="from_name" value="Om Shukla" />
+            <input type="text" name="from_name" />
             <input
               type="email"
               name="reply_to"
@@ -224,9 +224,9 @@ const SMS = ({ temp, id, type }) => {
 						/> */}
             <InputTag
               // Icon={FiType}
-              label="name"
+              label="Feedback"
               type="text"
-              placeholder="Enter coupon name"
+              // placeholder="Enter coupon name"
               value={couponData.name}
               onChange={(e) =>
                 setCoupon({ ...couponData, name: e.target.value })
@@ -236,15 +236,15 @@ const SMS = ({ temp, id, type }) => {
               <InputTag
                 // Icon={FiType}
                 notRequired={true}
-                label="cart limit"
+                label="For"
                 type="text"
-                placeholder="Enter Cart limit"
+                // placeholder="Enter Cart limit"
                 value={couponData.cart_limit}
                 onChange={(e) =>
                   setCoupon({ ...couponData, cart_limit: e.target.value })
                 }
               />
-              <InputTag
+              {/* <InputTag
                 // Icon={FiType}
                 label="amount limit"
                 notRequired={true}
@@ -349,12 +349,13 @@ const SMS = ({ temp, id, type }) => {
               // onChange={(e) =>
               //   setCoupon({ ...couponData, amount_limit: e.target.value })
               // }
-            />
+            />*/}
+            </div>
             <Button type="submit" Icon={HiPlusCircle}>
               Create
             </Button>
             <Button onClick={sendEmail} Icon={HiMail}>
-              Send Promation mail
+              Send mail
             </Button>
           </form>
         </Modal>

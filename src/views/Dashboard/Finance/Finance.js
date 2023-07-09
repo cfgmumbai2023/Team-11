@@ -52,34 +52,45 @@ import Cards from "./Cards";
 import Temp from "./tempCards";
 import Groups from "../Organization/Groups";
 import { forEach, forIn } from "lodash";
+import { TextFields } from "@mui/icons-material";
 var axios = require('axios');
 var FormData = require('form-data');
 // var fs = require('fs');
 
-const Finance = () => {
-
-	const Tile = ({ data, setConveniences }) => {
-		const [selected, setSelected] = useState(false);
-		const select = () => {
-			if (selected) {
-				setConveniences((prev) => prev.filter((item) => item !== data));
-				setSelected(selected);
-			} else {
-				setConveniences((prev) => [...prev, data]);
-				setSelected(!selected);
-			}
-		};
-		return (
-			<div
-				onClick={select}
-				className={`flex px-4 py-2 gap-2 rounded outline shadow cursor-pointer bg-emerald-100 ${selected ? "outline-2" : "outline-0"
-					}`}
-			>
-				{/* <CiWifiOn className="text-xl" /> */}
-				<h1 className="">{data}</h1>
-			</div>
-		);
+const Tile = ({ data, setConveniences, getByLanguage, langs, setLangs }) => {
+	const [selected, setSelected] = useState(false);
+	const select = () => {
+		console.log("debug", data);
+		if (selected) {
+			const _t = langs.filter((item) => item !== data);
+			setLangs(_t);
+			console.log("debug", _t);
+			setConveniences((prev) => prev.filter((item) => item !== data));
+			getByLanguage(_t);
+			setSelected(!selected);
+		} else {
+			setConveniences((prev) => [...prev, data]);
+			const _t = langs;
+			_t.push(data);
+			setLangs(_t);
+			console.log("debug", _t);
+			getByLanguage(_t);
+			setSelected(!selected);
+		}
 	};
+	return (
+		<div
+			onClick={select}
+			className={`flex px-4 py-2 gap-2 rounded outline shadow cursor-pointer bg-emerald-100 ${selected ? "outline-2" : "outline-0"
+				}`}
+		>
+			{/* <CiWifiOn className="text-xl" /> */}
+			<h1 className="">{data}</h1>
+		</div>
+	);
+};
+
+const Finance = () => {
 	const [domain, setDomain] = useState();
 	const CardSmall = ({ idx, name, children, value }) => {
 		const { currentTheme, colors } = useSelector((state) => state.theme);
@@ -144,13 +155,40 @@ const Finance = () => {
 		"summary": "living outside, often in a tent"
 	}]);
 
+	const getByLanguage = (selected) => {
+		console.log("hey", selected)
+		var urlPath = 'http://127.0.0.1:8000/api/videos/langs?langs='
+		for (var i = 0; i < selected?.length; i++) {
+			urlPath = urlPath + selected[i]?.toLowerCase() + ','
+		}
+		if (urlPath[urlPath.length - 1] === ',') {
+			urlPath = urlPath.substring(0, urlPath.length - 1);
+		}
+		var config = {
+			method: 'get',
+			url: urlPath,
+		};
+		console.log(config)
+		axios(config)
+			.then(function (response) {
+				console.log(response.data)
+				setLangVideos(response.data);
+			})
+			.catch(function (error) {
+				console.log(error);
+			}
+			);
+	}
+
 	const [langVideos, setLangVideos] = useState([]);
 	const [tagVideos, setTagVideos] = useState([]);
 	const [videos, setVideos] = useState([]);
 
-	const [langs, setLangs] = useState(["English","Hindi"]);
-	const [tags, setTags] = useState(["Maths","Python"]);
+	const [langs, setLangs] = useState([""]);
+	const [tags, setTags] = useState(["Maths", "Python"]);
 	const [query, setQuery] = useState("");
+	const [tag, settag] = useState("");
+	const [alldata, setdata] = useState([""]);
 
 	const getByQuery = () => {
 		var urlPath = 'http://127.0.0.1:8000/api/videos/search?q='
@@ -167,17 +205,31 @@ const Finance = () => {
 			.catch(function (error) {
 				console.log(error);
 			}
-		);
+			);
 	}
+	const getAll = () => {
+		var axios = require('axios');
 
-	const getByTags = () => {
+		var config = {
+			method: 'get',
+			url: 'http://localhost:8000/api/videos/all',
+
+		};
+
+		axios(config)
+			.then(function (response) {
+				setdata(response.data);
+				console.log(JSON.stringify(response.data));
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+
+	}
+	getAll();
+	const getByTags = (tag) => {
 		var urlPath = 'http://127.0.0.1:8000/api/videos/tags?tags='
-		for (var i = 0; i < tags.length; i++) {
-			urlPath = urlPath + tags[i].toLowerCase() + ','
-		}
-		if(urlPath[urlPath.length-1] === ','){
-			urlPath = urlPath.substring(0, urlPath.length - 1);
-		}
+		urlPath = urlPath + tag?.toLowerCase();
 		var config = {
 			method: 'get',
 			url: urlPath,
@@ -186,34 +238,14 @@ const Finance = () => {
 		axios(config)
 			.then(function (response) {
 				setTagVideos(response.data);
+				console.log(response.data);
 			})
 			.catch(function (error) {
 				console.log(error);
 			}
-		);
+			);
 	}
-	const getByLanguage = () => {
-		var urlPath = 'http://127.0.0.1:8000/api/videos/langs?langs='
-		for (var i = 0; i < langs.length; i++) {
-			urlPath = urlPath + langs[i].toLowerCase() + ','
-		}
-		if(urlPath[urlPath.length-1] === ','){
-			urlPath = urlPath.substring(0, urlPath.length - 1);
-		}
-		var config = {
-			method: 'get',
-			url: urlPath,
-		};
-		console.log(config)
-		axios(config)
-			.then(function (response) {
-				setLangVideos(response.data);
-			})
-			.catch(function (error) {
-				console.log(error);
-			}
-		);
-	}
+
 	useEffect(() => {
 		getByLanguage();
 		getByTags();
@@ -281,7 +313,6 @@ const Finance = () => {
 		setShowDeductionWarning(false);
 		setAllowanceId("");
 	};
-
 	// Deduction delete warning modal
 	const showDeductionDeleteModalHandler = (id) => {
 		setShowDeductionWarning(true);
@@ -291,6 +322,10 @@ const Finance = () => {
 		setShowDeductionWarning(false);
 		setAllowanceId("");
 	};
+	const onChangeTag = (event) => {
+		if (event !== undefined)
+			settag(event.target.value);
+	}
 	// Allowance delete warning modal
 	const showAllowanceDeleteModalHandler = (id) => {
 		setShowAllowanceWarning(true);
@@ -371,279 +406,210 @@ const Finance = () => {
 					<div className="flex flex-col gap-2 mt-4 p-4">
 						<h1 className="text-lg font-semibold">Select languages</h1>
 						<div className="flex flex-wrap gap-2">
-							<Tile data="English" setConveniences={setConveniences} />
-							<Tile data="Hindi" setConveniences={setConveniences} />
-							<Tile data="Marathi" setConveniences={setConveniences} />
-							<Tile data="Gujarati" setConveniences={setConveniences} />
-							<Tile data="Urdu" setConveniences={setConveniences} />
+							<Tile data="English" setConveniences={setConveniences} getByLanguage={getByLanguage} langs={langs} setLangs={setLangs} />
+							<Tile data="Hindi" setConveniences={setConveniences} getByLanguage={getByLanguage} langs={langs} setLangs={setLangs} />
+							<Tile data="Marathi" setConveniences={setConveniences} getByLanguage={getByLanguage} langs={langs} setLangs={setLangs} />
+							<Tile data="Gujarati" setConveniences={setConveniences} getByLanguage={getByLanguage} langs={langs} setLangs={setLangs} />
+							<Tile data="Urdu" setConveniences={setConveniences} getByLanguage={getByLanguage} langs={langs} setLangs={setLangs} />
 						</div>
 					</div>
 					<div class="grid grid-cols-3 gap-3">
-						<div class="max-w-sm rounded overflow-hidden shadow-lg">
+						{langVideos?.map((video) => {
+							return <div class="max-w-sm rounded overflow-hidden shadow-lg">
 
-							<div class="aspect-video">
-								<iframe
-									class="w-full h-full"
-									src="https://www.youtube.com/embed/gzALIXcY4pg"
-									frameborder="0"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowFullScreen>
-								</iframe>
-							</div>
+								<div class="aspect-video">
+									<iframe
+										class="w-full h-full"
+										src={video.videoUrl}
+										frameborder="0"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+										allowFullScreen>
+									</iframe>
+								</div>
+								<div class="px-6 py-4">
+									<div class="font-bold text-xl mb-2">{video.title}</div>
+									<p class="text-gray-700 text-base">
+										{video?.tags?.map((tag) => { <span>{tag}</span> })}
+									</p>
+								</div>
+								<div>
+									<Accordion>
+										<AccordionSummary
+											expandIcon={<ExpandMoreIcon />}
+											aria-controls="panel1a-content"
+											id="panel1a-header"
+										>
+											<Typography>People also saw these</Typography>
+										</AccordionSummary>
+										<AccordionDetails>
+											<Typography>
+												<div>
+													<a className="text-blue-500" href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Introduction</a>
+												</div>
+											</Typography>
+											<Typography>
+												<div>
+													<a className="text-blue-500" href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Formula</a>
+												</div>
+											</Typography>
+										</AccordionDetails>
+									</Accordion>
 
-							{/*	<div class="relative overflow-hidden pb-9/16 ">
-								<iframe  src="https://www.youtube.com/embed/gzALIXcY4pg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-							</div>*/}
-							<div class="px-6 py-4">
-								<div class="font-bold text-xl mb-2">American History</div>
-								<p class="text-gray-700 text-base">
-									About American History
-								</p>
+								</div>
 							</div>
-							<div>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel1a-content"
-										id="panel1a-header"
-									>
-										<Typography>Previous</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Link</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel2a-content"
-										id="panel2a-header"
-									>
-										<Typography>Next</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Link</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
+						})}
+					</div>
+				</TabPanel>
+				<TabPanel>
+					<br />
+					<InputTag label="Search by tag" value={tag} onChange={onChangeTag}>Search by tag</InputTag>
+					<Button children="submit" variant="contained" color="primary" onClick={getByTags}></Button>
+					<div class="grid grid-cols-3 gap-3">
 
-							</div>
-						</div>
-						<div class="max-w-sm rounded overflow-hidden shadow-lg">
-							<div class="aspect-video">
-								<iframe
-									class="w-full h-full"
-									src="https://www.youtube.com/embed/gzALIXcY4pg"
-									frameborder="0"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowFullScreen>
-								</iframe>
-							</div>
-							<div class="px-6 py-4">
-								<div class="font-bold text-xl mb-2">American History</div>
-								<p class="text-gray-700 text-base">
-									About American History
-								</p>
-							</div>
-							<div>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel1a-content"
-										id="panel1a-header"
-									>
-										<Typography>Previous</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Link</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel2a-content"
-										id="panel2a-header"
-									>
-										<Typography>Next</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Link</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
+						{langVideos?.map((video) => {
+							return <div class="max-w-sm rounded overflow-hidden shadow-lg">
 
-							</div>
-						</div>
-						<div class="max-w-sm rounded overflow-hidden shadow-lg">
-							<div class="aspect-video">
-								<iframe
-									class="w-full h-full"
-									src="https://www.youtube.com/embed/gzALIXcY4pg"
-									frameborder="0"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowFullScreen>
-								</iframe>
-							</div>
-							<div class="px-6 py-4">
-								<div class="font-bold text-xl mb-2">American History</div>
-								<p class="text-gray-700 text-base">
-									About American History
-								</p>
-							</div>
-							<div>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel1a-content"
-										id="panel1a-header"
-									>
-										<Typography>Previous</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Link</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel2a-content"
-										id="panel2a-header"
-									>
-										<Typography>Next</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Link</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
+								<div class="aspect-video">
+									<iframe
+										class="w-full h-full"
+										src={video.videoUrl}
+										frameborder="0"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+										allowFullScreen>
+									</iframe>
+								</div>
+								<div class="px-6 py-4">
+									<div class="font-bold text-xl mb-2">{video.title}</div>
+									<p class="text-gray-700 text-base">
+										{video?.tags?.map((tag) => { <span>{tag}</span> })}
+									</p>
+								</div>
+								<div>
+									<Accordion>
+										<AccordionSummary
+											expandIcon={<ExpandMoreIcon />}
+											aria-controls="panel1a-content"
+											id="panel1a-header"
+										>
+											<Typography>People also saw these</Typography>
+										</AccordionSummary>
+										<AccordionDetails>
+											<Typography>
+												<div>
+													<a className="text-blue-500" href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Introduction</a>
+												</div>
+											</Typography>
+											<Typography>
+												<div>
+													<a className="text-blue-500" href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Formula</a>
+												</div>
+											</Typography>
+										</AccordionDetails>
+									</Accordion>
 
+								</div>
 							</div>
-						</div>
-						<div class="max-w-sm rounded overflow-hidden shadow-lg">
-							<div class="aspect-video">
-								<iframe
-									class="w-full h-full"
-									src="https://www.youtube.com/embed/gzALIXcY4pg"
-									frameborder="0"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowFullScreen>
-								</iframe>
-							</div>
-							<div class="px-6 py-4">
-								<div class="font-bold text-xl mb-2">American History</div>
-								<p class="text-gray-700 text-base">
-									About American History
-								</p>
-							</div>
-							<div>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel1a-content"
-										id="panel1a-header"
-									>
-										<Typography>Previous</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Link</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel2a-content"
-										id="panel2a-header"
-									>
-										<Typography>Next</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Link</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
+						})}
+					</div>
+				</TabPanel>
+				<TabPanel>
+					<br />
+					<div class="grid grid-cols-3 gap-3">
 
-							</div>
-						</div>
-						<div class="max-w-sm rounded overflow-hidden shadow-lg">
-							<div class="aspect-video">
-								<iframe
-									class="w-full h-full"
-									src="https://www.youtube.com/embed/gzALIXcY4pg"
-									frameborder="0"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowFullScreen>
-								</iframe>
-							</div>
-							<div class="px-6 py-4">
-								<div class="font-bold text-xl mb-2">American History</div>
-								<p class="text-gray-700 text-base">
-									About American History
-								</p>
-							</div>
-							<div>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel1a-content"
-										id="panel1a-header"
-									>
-										<Typography>Previous</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Google</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
-								<Accordion>
-									<AccordionSummary
-										expandIcon={<ExpandMoreIcon />}
-										aria-controls="panel2a-content"
-										id="panel2a-header"
-									>
-										<Typography>Next</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<Typography>
-											<div>
-												<a href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Google</a>
-											</div>
-										</Typography>
-									</AccordionDetails>
-								</Accordion>
+						{alldata?.map((video) => {
+							return <div class="max-w-sm rounded overflow-hidden shadow-lg">
 
+								<div class="aspect-video">
+									<iframe
+										class="w-full h-full"
+										src={video.videoUrl}
+										frameborder="0"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+										allowFullScreen>
+									</iframe>
+								</div>
+								<div class="px-6 py-4">
+									<div class="font-bold text-xl mb-2">{video.title}</div>
+									<p class="text-gray-700 text-base">
+										{video?.tags?.map((tag) => { <span>{tag}</span> })}
+									</p>
+								</div>
+								<div>
+									<Accordion>
+										<AccordionSummary
+											expandIcon={<ExpandMoreIcon />}
+											aria-controls="panel1a-content"
+											id="panel1a-header"
+										>
+											<Typography>People also saw these</Typography>
+										</AccordionSummary>
+										<AccordionDetails>
+											<Typography>
+												<div>
+													<a className="text-blue-500" href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Introduction</a>
+												</div>
+											</Typography>
+											<Typography>
+												<div>
+													<a className="text-blue-500" href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Formula</a>
+												</div>
+											</Typography>
+										</AccordionDetails>
+									</Accordion>
+
+								</div>
 							</div>
-						</div>
+						})}
+					</div>
+				</TabPanel>
+				<TabPanel>
+					<br />
+					<div class="grid grid-cols-3 gap-3">
+
+						{alldata?.map((video) => {
+							return <div class="max-w-sm rounded overflow-hidden shadow-lg">
+
+								<div class="aspect-video">
+									<iframe
+										class="w-full h-full"
+										src={video.videoUrl}
+										frameborder="0"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+										allowFullScreen>
+									</iframe>
+								</div>
+								<div class="px-6 py-4">
+									<div class="font-bold text-xl mb-2">{video.title}</div>
+									<p class="text-gray-700 text-base">
+										{video?.tags?.map((tag) => { <span>{tag}</span> })}
+									</p>
+								</div>
+								<div>
+									<Accordion>
+										<AccordionSummary
+											expandIcon={<ExpandMoreIcon />}
+											aria-controls="panel1a-content"
+											id="panel1a-header"
+										>
+											<Typography>People also saw these</Typography>
+										</AccordionSummary>
+										<AccordionDetails>
+											<Typography>
+												<div>
+													<a className="text-blue-500" href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Introduction</a>
+												</div>
+											</Typography>
+											<Typography>
+												<div>
+													<a className="text-blue-500" href={'https://www.youtube.com/embed/gzALIXcY4pg'}>Formula</a>
+												</div>
+											</Typography>
+										</AccordionDetails>
+									</Accordion>
+
+								</div>
+							</div>
+						})}
 					</div>
 				</TabPanel>
 			</Tabs>
